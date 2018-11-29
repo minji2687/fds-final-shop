@@ -23,13 +23,14 @@ class ProductDetailView extends Component {
 
     this.state = {
       quantity: 1,
-      selectedOptionId: null,
+      selectedOptionId: '',
     };
   }
 
   handleOptionChange(e) {
     this.setState({
       selectedOptionId: parseInt(e.target.value),
+      quantity: 1,
     });
   }
 
@@ -57,7 +58,11 @@ class ProductDetailView extends Component {
         <select
           value={selectedOptionId}
           onChange={e => this.handleOptionChange(e)}
+          required
         >
+          <option disabled value="">
+            옵션을 선택하세요
+          </option>
           {options.map(o => (
             <option key={o.id} value={o.id}>
               {o.title}
@@ -67,6 +72,8 @@ class ProductDetailView extends Component {
         <input
           value={quantity}
           type="number"
+          min="1"
+          max="10"
           onChange={e => this.handleQuantityChange(e)}
         />
         <div>가격: {totalPrice}</div>
