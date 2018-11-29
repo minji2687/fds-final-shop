@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 
 export default class LoginFormView extends Component {
   constructor(props) {
@@ -7,6 +8,7 @@ export default class LoginFormView extends Component {
     this.state = {
       username: '',
       password: '',
+      success: false,
     };
   }
 
@@ -22,14 +24,22 @@ export default class LoginFormView extends Component {
     });
   }
 
-  handleLoginButtonClick() {
+  async handleLoginButtonClick() {
     const { onLogin } = this.props;
     const { username, password } = this.state;
-    onLogin(username, password);
+    await onLogin(username, password);
+    // 로그인이 성공적으로 끝났을 때
+    this.setState({
+      success: true,
+    });
+    // Redirect 컴포넌트를 렌더링 -> 주소표시줄의 상태가 바뀜
   }
 
   render() {
-    const { username, password } = this.state;
+    const { username, password, success } = this.state;
+    if (success) {
+      return <Redirect to="/" />;
+    }
     return (
       <div>
         <input
