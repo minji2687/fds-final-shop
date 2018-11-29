@@ -17,6 +17,28 @@ class ProductDetailView extends Component {
       // },
     ],
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      quantity: 1,
+      selectedOptionId: null,
+    };
+  }
+
+  handleOptionChange(e) {
+    this.setState({
+      selectedOptionId: parseInt(e.target.value),
+    });
+  }
+
+  handleQuantityChange(e) {
+    this.setState({
+      quantity: parseInt(e.target.value),
+    });
+  }
+
   render() {
     const {
       id,
@@ -26,13 +48,28 @@ class ProductDetailView extends Component {
       detailImgUrls,
       options,
     } = this.props;
+    const { quantity, selectedOptionId } = this.state;
+
+    const selectedOption = options.find(o => o.id === selectedOptionId);
+    const totalPrice = selectedOption && selectedOption.price * quantity;
     return (
       <div>
-        <select>
+        <select
+          value={selectedOptionId}
+          onChange={e => this.handleOptionChange(e)}
+        >
           {options.map(o => (
-            <option value={o.id}>{o.title}</option>
+            <option key={o.id} value={o.id}>
+              {o.title}
+            </option>
           ))}
         </select>
+        <input
+          value={quantity}
+          type="number"
+          onChange={e => this.handleQuantityChange(e)}
+        />
+        <div>가격: {totalPrice}</div>
         <div>{id}</div>
         <div>{title}</div>
         <div>{description}</div>
