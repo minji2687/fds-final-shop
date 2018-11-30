@@ -1,11 +1,6 @@
-import React from 'react';
 import HeaderView from '../components/HeaderView';
-import { withUser, UserConsumer } from '../contexts/UserContext';
+import { withUser } from '../contexts/UserContext';
+import { withRouter } from 'react-router-dom';
 
-export default function Header(props) {
-  return (
-    <UserConsumer>
-      {value => <HeaderView key={value.username} {...value} />}
-    </UserConsumer>
-  );
-}
+export default withRouter(withUser(HeaderView));
+// withRouter를 둘러준 컴포넌트는 match, history, location prop을 받게 된다.
